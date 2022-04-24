@@ -3,6 +3,7 @@ package com.example.allegrosummerexperience.model;
 import java.util.List;
 import java.util.Map;
 
+/* Repository model class */
 public class SingleRepoModel {
 
     private String name;

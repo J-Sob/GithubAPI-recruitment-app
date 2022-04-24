@@ -23,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/*  Service class for API responses handling */
 public class GithubAPIService {
 
     private Context context;
@@ -33,7 +34,7 @@ public class GithubAPIService {
     public GithubAPIService(Context context) {
         this.context = context;
     }
-
+    /* Fetching certain users repositories */
     public void getUsersRepos(String username, final VolleyResponseListener volleyResponseListener) {
         if (!username.equals("")) {
             String url = "https://api.github.com/users/" + username + "/repos";
@@ -69,7 +70,7 @@ public class GithubAPIService {
             Toast.makeText(context, "Enter GitHub username first", Toast.LENGTH_LONG).show();
         }
     }
-
+    /* Fetching single repo languages info */
     public void getSingleRepoInfo(String repoName, String repoOwner, final VolleyResponseListener volleyResponseListener){
         String url = "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/languages";
         JsonObjectRequest request = new JsonObjectRequest(
@@ -79,6 +80,7 @@ public class GithubAPIService {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        /* Keeping languages in LinkedHashMap to keep original order of elements */
                         Map<String, Integer> languages = new LinkedHashMap<>();
                         Iterator<String> keys = response.keys();
                         while(keys.hasNext()){

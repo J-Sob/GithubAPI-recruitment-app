@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/* Adapter for listView with languages */
 public class LanguagesListAdapter extends ArrayAdapter<String> {
 
     private Context context;

@@ -15,6 +15,7 @@ import com.example.allegrosummerexperience.R;
 
 import java.util.List;
 
+/* Adapter for listView with repositories */
 public class ReposListAdapter extends ArrayAdapter<String> {
 
     private Context context;

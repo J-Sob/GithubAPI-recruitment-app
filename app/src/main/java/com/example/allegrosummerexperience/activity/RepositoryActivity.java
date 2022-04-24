@@ -21,12 +21,12 @@ import com.example.allegrosummerexperience.utils.VolleyResponseListener;
 
 import java.util.ArrayList;
 
+/* Single repo view */
 public class RepositoryActivity extends AppCompatActivity {
 
     private TextView repoName;
     private TextView ownerName;
     private ListView languagesList;
-    private Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

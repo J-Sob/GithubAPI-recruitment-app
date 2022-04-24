@@ -18,6 +18,7 @@ import com.example.allegrosummerexperience.utils.VolleyResponseListener;
 
 import java.util.ArrayList;
 
+/* Main view */
 public class MainActivity extends AppCompatActivity {
 
     private EditText githubUsername;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 GithubAPIService githubAPIService = new GithubAPIService(MainActivity.this);
+                /* Using callback interface since API requests are async */
                 githubAPIService.getUsersRepos(githubUsername.getText().toString(), new VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
