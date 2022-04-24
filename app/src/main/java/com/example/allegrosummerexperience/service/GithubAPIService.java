@@ -7,8 +7,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.allegrosummerexperience.api.GithubAPISingleton;
-import com.example.allegrosummerexperience.model.ReposModel;
+import com.example.allegrosummerexperience.model.SingleRepoModel;
 import com.example.allegrosummerexperience.utils.VolleyResponseListener;
 
 import org.json.JSONArray;
@@ -16,7 +17,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GithubAPIService {
 
@@ -39,14 +44,12 @@ public class GithubAPIService {
                     new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
-                            List<ReposModel> repos = new ArrayList<>();
+                            List<String> repos = new ArrayList<>();
                             for(int i = 0; i < response.length(); i++){
                                 try {
                                     JSONObject repo = response.getJSONObject(i);
                                     String repoName = repo.getString("name");
-                                    boolean repoPrivate = repo.getBoolean("private");
-                                    ReposModel reposModel = new ReposModel(repoName);
-                                    repos.add(reposModel);
+                                    repos.add(repoName);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -65,5 +68,39 @@ public class GithubAPIService {
         } else {
             Toast.makeText(context, "Enter GitHub username first", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void getSingleRepoInfo(String repoName, String repoOwner, final VolleyResponseListener volleyResponseListener){
+        String url = "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/languages";
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Map<String, Integer> languages = new LinkedHashMap<>();
+                        Iterator<String> keys = response.keys();
+                        while(keys.hasNext()){
+                            try {
+                                String key = keys.next();
+                                Integer bytes = response.getInt(key);
+                                languages.put(key, bytes);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        SingleRepoModel singleRepoModel = new SingleRepoModel(repoName, repoOwner, languages);
+                        volleyResponseListener.onResponse(singleRepoModel);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        volleyResponseListener.onError("Something went wrong");
+                    }
+                }
+        );
+        GithubAPISingleton.getInstance(context).addToRequestQueue(request);
     }
 }

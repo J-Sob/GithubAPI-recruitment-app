@@ -12,28 +12,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.allegrosummerexperience.R;
-import com.example.allegrosummerexperience.model.ReposModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ReposListAdapter extends ArrayAdapter<String> {
 
     private Context context;
-    private List<ReposModel> reposModels;
+    private List<String> reposNames;
 
-    public ReposListAdapter(@NonNull Context context, List<ReposModel> reposModels) {
-        super(context, R.layout.repo_row, R.id.textViewRepoName,(ArrayList)reposModels);
+    public ReposListAdapter(@NonNull Context context, List<String> reposNames) {
+        super(context, R.layout.repo_row, R.id.textViewLanguage,reposNames);
         this.context = context;
-        this.reposModels = reposModels;
+        this.reposNames = reposNames;
     }
 
-    public List<ReposModel> getReposModels() {
-        return reposModels;
-    }
-
-    public void setReposModels(List<ReposModel> reposModels) {
-        this.reposModels = reposModels;
+    public List<String> getReposNames() {
+        return reposNames;
     }
 
     @NonNull
@@ -41,10 +35,10 @@ public class ReposListAdapter extends ArrayAdapter<String> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row = layoutInflater.inflate(R.layout.repo_row, parent, false);
-        TextView repoName = row.findViewById(R.id.textViewRepoName);
+        TextView repoName = row.findViewById(R.id.textViewLanguage);
         ImageView icon = row.findViewById(R.id.imageViewIcon);
 
-        repoName.setText(reposModels.get(position).getName());
+        repoName.setText(reposNames.get(position));
         return row;
     }
 }
